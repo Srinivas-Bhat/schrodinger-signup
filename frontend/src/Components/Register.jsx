@@ -72,7 +72,7 @@ const Register = () => {
   // Submit for the for submission
   const handleSubmit = async (e) => {
     e?.preventDefault();
-    // console.log(form, error);
+    console.log("handleSubmit function");
     if (error.name || error.email || error.password) {
       toast.error(`Please fill all the fields`, {
         position: "top-right",
@@ -94,7 +94,7 @@ const Register = () => {
         };
 
         const { data } = await axios.post(
-          process.env.REACT_APP_DEPLOYED_BACKEND_LINK,
+          `${process.env.REACT_APP_DEPLOYED_BACKEND_LINK}/api/user/signup`,
           { name: form.name, email: form.email, password: form.password },
           config
         );
@@ -159,7 +159,7 @@ const Register = () => {
           email: false,
           password: false,
         });
-        toast.success(`🎊  You have been successfully registered d`, {
+        toast.success(`🎊  You have been successfully registered`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -174,9 +174,9 @@ const Register = () => {
     }
   };
 
-  
   // function to submit if the user is online again
   const handleOnlineSubmit = async (userInfo) => {
+    console.log("onlineSubmit function", userInfo);
     try {
       const config = {
         headers: {
@@ -185,7 +185,7 @@ const Register = () => {
       };
 
       const { data } = await axios.post(
-        process.env.REACT_APP_DEPLOYED_BACKEND_LINK,
+        `${process.env.REACT_APP_DEPLOYED_BACKEND_LINK}/api/user/signup`,
         { name: userInfo.name, email: userInfo.email, password: userInfo.password },
         config
       );
@@ -212,6 +212,7 @@ const Register = () => {
         email: false,
         password: false,
       });
+      localStorage.removeItem("userInfo");
       return "done";
     } catch (err) {
       console.log(err);
@@ -232,6 +233,8 @@ const Register = () => {
   const InternetErrMessagenger = () => setIsUserOnline(navigator.onLine === true);
 
   useEffect(() => {
+    // localStorage.removeItem("userInfo");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     interval = setInterval(InternetErrMessagenger, 1000);
     return () => {
       clearInterval(interval);
@@ -241,11 +244,9 @@ const Register = () => {
   useEffect(() => {
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (isUserOnline === true && userInfo) {
+      // console.log(handleOnlineSubmit(userInfo))
       handleOnlineSubmit(userInfo).then((res) => {
-        if (res === "done") {
-          console.log(res);
-          localStorage.removeItem("userInfo");
-        }
+        console.log(res);
       });
     }
   }, [isUserOnline]);
@@ -359,18 +360,19 @@ const Register = () => {
                 onClick={handleSubmit}
               />
 
-              <p className="social-text">Or Sign up with social platforms</p>
+              <p>or</p>
+              <p className="social-text">Sign up with social platforms</p>
               <div className="social-media">
-                <a href="#" className="social-icon">
+                <a className="social-icon">
                   <i className="fab fa-facebook-f"></i>
                 </a>
-                <a href="#" className="social-icon">
+                <a className="social-icon">
                   <i className="fab fa-twitter"></i>
                 </a>
-                <a href="#" className="social-icon">
+                <a className="social-icon">
                   <i className="fab fa-google"></i>
                 </a>
-                <a href="#" className="social-icon">
+                <a className="social-icon">
                   <i className="fab fa-linkedin-in"></i>
                 </a>
               </div>

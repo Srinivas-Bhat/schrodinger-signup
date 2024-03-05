@@ -94,7 +94,7 @@ const Register = () => {
         };
 
         const { data } = await axios.post(
-          "http://localhost:5005/api/user/signup",
+          process.env.REACT_APP_DEPLOYED_BACKEND_LINK,
           { name: form.name, email: form.email, password: form.password },
           config
         );
@@ -174,6 +174,7 @@ const Register = () => {
     }
   };
 
+  
   // function to submit if the user is online again
   const handleOnlineSubmit = async (userInfo) => {
     try {
@@ -184,7 +185,7 @@ const Register = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:5005/api/user/signup",
+        process.env.REACT_APP_DEPLOYED_BACKEND_LINK,
         { name: userInfo.name, email: userInfo.email, password: userInfo.password },
         config
       );
